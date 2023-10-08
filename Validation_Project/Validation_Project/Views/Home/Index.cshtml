@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewBag.Title = "SignUp";
+}
+@{
+    bool CheckGender(string gender)
+    {
+        if (Model != null && Model.Gender != null &&
+            Model.Gender.Equals(gender))
+        {
+            return true;
+        }
+        return false;
+    }
+    bool CheckHobbies(string hobby)
+    {
+        if (Model != null && Model.Hobbies != null)
+        {
+            foreach (var h in Model.Hobbies)
+            {
+                if (h.Equals(hobby)) return true;
+            }
+        }
+        return false;
+    }
+}
+
+<h2>SignUp</h2>
+@Html.ValidationSummary()
+
+<form action="" method="post">
+    Name : <input type="text" value="@(Model==null ? "":Model.Name)" name="Name" /><br />
+    <span class="text-danger">@Html.ValidationMessage("Name")</span>
+    <br />
+    User ID : <input type="text" value="@(Model==null ? "":Model.Name)" name="Name" /><br />
+    <span class="text-danger">@Html.ValidationMessage("Name")</span>
+    <br />
+    Password : <input type="text" value="@(Model==null ? "":Model.Name)" name="Name" /><br />
+    <span class="text-danger">@Html.ValidationMessage("Name")</span>
+    <br />
+    ID : <input type="text" value="@(Model==null ? "":Model.Name)" name="Name" /><br />
+    <span class="text-danger">@Html.ValidationMessage("Name")</span>
+    <br />
+    Email : <input type="text" value="@(Model==null ? "":Model.Name)" name="Name" /><br />
+    <span class="text-danger">@Html.ValidationMessage("Name")</span>
+    <br />
+    Name : <input type="text" value="@(Model==null ? "":Model.Name)" name="Name" /><br />
+    <span class="text-danger">@Html.ValidationMessage("Name")</span>
+    <br />
+    <input type="submit" value="Sign Up" />
+</form>

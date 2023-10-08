@@ -1,0 +1,49 @@
+﻿
+@{
+    ViewBag.Title = "SignUp";
+}
+@{
+//DateTime today = DateTime.Today;
+////DateTime dob = // Get the date of birth from the input
+////bool isValid = (today - dob).TotalDays >= (18 * 365);
+
+//bool CheckDob(DateTime? Dob)
+//{
+//    if ((today - Dob).TotalDays >= (18 * 365))
+//    { return true; }
+
+//    return false;
+
+//}
+
+
+
+
+
+}
+
+
+<h2>SignUp</h2>
+@Html.ValidationSummary()
+
+<form action="" method="post">
+    Name : <input type="text" value="@(Model==null ? "":Model.Name)" name="Name" /><br />
+    <span class="text-danger">@Html.ValidationMessage("Name")</span>
+    <br />
+    User ID : <input type="text" value="@(Model==null ? "":Model.Username)" name="Username" /><br />
+    <span class="text-danger">@Html.ValidationMessage("Username")</span>
+    <br />
+    Password : <input type="password" value="@(Model==null ? "":Model.Password)" name="Password" /><br />
+    <span class="text-danger">@Html.ValidationMessage("Password")</span>
+    <br />
+    ID : <input type="text" value="@(Model==null ? "":Model.Id)" name="Id" /><br />
+    <span class="text-danger">@Html.ValidationMessage("Id")</span>
+    <br />
+    Email : <input type="text" value="@(Model==null ? "":Model.Email)" name="Email" /><br />
+    <span class="text-danger">@Html.ValidationMessage("Email")</span>
+    <br />
+    DOB : <input type="date"value="@(Model==null ? "":Model.Dob)" name="Dob" /><br />
+    <span class="text-danger">@Html.ValidationMessage("Dob")</span>
+    <br />
+    <input type="submit" value="Sign Up" />
+</form>
