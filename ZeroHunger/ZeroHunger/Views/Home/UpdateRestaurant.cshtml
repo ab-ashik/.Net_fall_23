@@ -1,0 +1,36 @@
+﻿@model ZeroHunger.DTOs.RestaurantDTO
+
+@{
+    ViewBag.Title = "UpdateRestaurant";
+}
+
+<div class="row d-flex justify-content-center">
+    <form method="post" id="login" class="col-md-6">
+        <h2 class="">Update Employee Details</h2>
+
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Enter employee name here" value="@Model.name">
+        </div>
+        <div class="form-group">
+            <label for="uname">Username</label>
+            <input type="text" class="form-control" id="uname" name="uname" placeholder="Enter employee username here" value="@Model.username">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="text" class="form-control" id="password" name="password" placeholder="Enter employee password here" value="@Model.password">
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number here" value="@Model.phone">
+        </div>
+        <div class="form-group">
+            <label for="location">Location</label>
+            <input type="text" class="form-control" id="location" name="location" placeholder="Enter restuarant location here" value="@Model.location">
+        </div>
+
+        <div class="">
+            <button type="submit" class="btn btn-primary">Add Employee</button>
+        </div>
+    </form>
+</div>

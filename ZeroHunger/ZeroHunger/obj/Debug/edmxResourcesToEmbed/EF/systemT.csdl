@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ZH_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="collection_rqsts">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="restaurant_id" Type="Int32" Nullable="false" />
+    <Property Name="expiry_date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Restaurant" Relationship="Self.FK_collection_rqsts_Restaurants" FromRole="collection_rqsts" ToRole="Restaurants" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="phone" Type="Int32" Nullable="false" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Histories" Relationship="Self.FK_History_Employees" FromRole="Employees" ToRole="History" />
+  </EntityType>
+  <EntityType Name="History">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="distribution_id" Type="Int32" Nullable="false" />
+    <Property Name="emp_id" Type="Int32" Nullable="false" />
+    <Property Name="restuarant_id" Type="Int32" Nullable="false" />
+    <Property Name="collection_time" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK_History_Employees" FromRole="History" ToRole="Employees" />
+    <NavigationProperty Name="Restaurant" Relationship="Self.FK_History_Distributions" FromRole="History" ToRole="Restaurants" />
+  </EntityType>
+  <EntityType Name="Restaurant">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="phone" Type="Int32" Nullable="false" />
+    <Property Name="location" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="collection_rqsts" Relationship="Self.FK_collection_rqsts_Restaurants" FromRole="Restaurants" ToRole="collection_rqsts" />
+    <NavigationProperty Name="Histories" Relationship="Self.FK_History_Distributions" FromRole="Restaurants" ToRole="History" />
+  </EntityType>
+  <Association Name="FK_collection_rqsts_Restaurants">
+    <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="1" />
+    <End Role="collection_rqsts" Type="Self.collection_rqsts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Restaurants">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="collection_rqsts">
+        <PropertyRef Name="restaurant_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_History_Employees">
+    <End Role="Employees" Type="Self.Employee" Multiplicity="1" />
+    <End Role="History" Type="Self.History" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="History">
+        <PropertyRef Name="emp_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_History_Distributions">
+    <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="1" />
+    <End Role="History" Type="Self.History" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Restaurants">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="History">
+        <PropertyRef Name="restuarant_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ZH_DBEntities12" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="collection_rqsts" EntityType="Self.collection_rqsts" />
+    <EntitySet Name="Employees" EntityType="Self.Employee" />
+    <EntitySet Name="Histories" EntityType="Self.History" />
+    <EntitySet Name="Restaurants" EntityType="Self.Restaurant" />
+    <AssociationSet Name="FK_collection_rqsts_Restaurants" Association="Self.FK_collection_rqsts_Restaurants">
+      <End Role="Restaurants" EntitySet="Restaurants" />
+      <End Role="collection_rqsts" EntitySet="collection_rqsts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_History_Employees" Association="Self.FK_History_Employees">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="History" EntitySet="Histories" />
+    </AssociationSet>
+    <AssociationSet Name="FK_History_Distributions" Association="Self.FK_History_Distributions">
+      <End Role="Restaurants" EntitySet="Restaurants" />
+      <End Role="History" EntitySet="Histories" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
