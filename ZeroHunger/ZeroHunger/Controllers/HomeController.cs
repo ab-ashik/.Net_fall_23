@@ -1,28 +1,35 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using System.Web.UI.WebControls;
+using ZeroHunger.Auth;
 using ZeroHunger.DTOs;
 using ZeroHunger.EF;
+using ZeroHunger.Models;
 
 namespace ZeroHunger.Controllers
 {
     public class HomeController : Controller
     {
+        [Logged]
         public ActionResult Index()
         {
             return View();
         }
 
+        [Logged]
         public ActionResult Employee()
         {
-            var db = new ZH_DBEntities12();
+            var db = new ZH_DBEntities16();
             var data = db.Employees.ToList();
 
-            var cofig = new MapperConfiguration(cfg => {
+            var cofig = new MapperConfiguration(cfg =>
+            {
                 cfg.CreateMap<Employee, EmployeeDTO>();
             });
             var mapper = new Mapper(cofig);
@@ -32,6 +39,7 @@ namespace ZeroHunger.Controllers
         }
 
         [HttpGet]
+        [Logged]
         public ActionResult AddEmployees()
         {
             return View();
@@ -42,9 +50,10 @@ namespace ZeroHunger.Controllers
         {
             if (ModelState.IsValid)
             {
-                var db = new ZH_DBEntities12();
+                var db = new ZH_DBEntities16();
 
-                var cofig = new MapperConfiguration(cfg => {
+                var cofig = new MapperConfiguration(cfg =>
+                {
                     cfg.CreateMap<EmployeeDTO, Employee>();
                 });
                 var mapper = new Mapper(cofig);
@@ -58,13 +67,14 @@ namespace ZeroHunger.Controllers
         }
 
         [HttpGet]
+        [Logged]
         public ActionResult DeleteEmployee(int id)
         {
-            var db = new ZH_DBEntities12();
+            var db = new ZH_DBEntities16();
 
             var data = (from dp in db.Employees
-                       where dp.id.Equals(id)
-                       select dp).SingleOrDefault();
+                        where dp.id.Equals(id)
+                        select dp).SingleOrDefault();
 
             if (data == null)
             {
@@ -85,14 +95,16 @@ namespace ZeroHunger.Controllers
 
 
         [HttpGet]
+        [Logged]
         public ActionResult UpdateEmployee(int id)
         {
-            var db = new ZH_DBEntities12();
+            var db = new ZH_DBEntities16();
             var model = (from employee in db.Employees
                          where employee.id == id
                          select employee).SingleOrDefault();
 
-            var cofig = new MapperConfiguration(cfg => {
+            var cofig = new MapperConfiguration(cfg =>
+            {
                 cfg.CreateMap<Employee, EmployeeDTO>();
             });
             var mapper = new Mapper(cofig);
@@ -104,7 +116,7 @@ namespace ZeroHunger.Controllers
         [HttpPost]
         public ActionResult UpdateEmployee(EmployeeDTO model)
         {
-            var db = new ZH_DBEntities12();
+            var db = new ZH_DBEntities16();
             var employee = db.Employees.SingleOrDefault(e => e.id == model.id);
 
             if (employee != null)
@@ -119,13 +131,14 @@ namespace ZeroHunger.Controllers
         }
 
 
-
+        [Logged]
         public ActionResult Restaurant()
         {
-            var db = new ZH_DBEntities12();
+            var db = new ZH_DBEntities16();
             var data = db.Restaurants.ToList();
 
-            var cofig = new MapperConfiguration(cfg => {
+            var cofig = new MapperConfiguration(cfg =>
+            {
                 cfg.CreateMap<Restaurant, RestaurantDTO>();
             });
             var mapper = new Mapper(cofig);
@@ -138,6 +151,7 @@ namespace ZeroHunger.Controllers
 
 
         [HttpGet]
+        [Logged]
         public ActionResult AddRestaurants()
         {
             return View();
@@ -148,15 +162,16 @@ namespace ZeroHunger.Controllers
         {
             if (ModelState.IsValid)
             {
-                var db = new ZH_DBEntities12();
+                var db = new ZH_DBEntities16();
 
-                var cofig = new MapperConfiguration(cfg => {
+                var cofig = new MapperConfiguration(cfg =>
+                {
                     cfg.CreateMap<RestaurantDTO, Restaurant>();
                 });
                 var mapper = new Mapper(cofig);
-                var data3 = mapper.Map<Restaurant>(restaurant);
+                var data = mapper.Map<Restaurant>(restaurant);
 
-                db.Restaurants.Add(data3);
+                db.Restaurants.Add(data);
                 db.SaveChanges();
                 return RedirectToAction("Restaurant", "Home");
             }
@@ -167,14 +182,16 @@ namespace ZeroHunger.Controllers
 
 
         [HttpGet]
+        [Logged]
         public ActionResult UpdateRestaurant(int id)
         {
-            var db = new ZH_DBEntities12();
+            var db = new ZH_DBEntities16();
             var model = (from restaurant in db.Restaurants
                          where restaurant.id == id
                          select restaurant).SingleOrDefault();
 
-            var cofig = new MapperConfiguration(cfg => {
+            var cofig = new MapperConfiguration(cfg =>
+            {
                 cfg.CreateMap<Restaurant, RestaurantDTO>();
             });
             var mapper = new Mapper(cofig);
@@ -186,10 +203,11 @@ namespace ZeroHunger.Controllers
         [HttpPost]
         public ActionResult UpdateRestaurant(RestaurantDTO model)
         {
-            var db = new ZH_DBEntities12();
+            var db = new ZH_DBEntities16();
             var restaurant = db.Restaurants.SingleOrDefault(e => e.id == model.id);
 
-            var cofig = new MapperConfiguration(cfg => {
+            var cofig = new MapperConfiguration(cfg =>
+            {
                 cfg.CreateMap<RestaurantDTO, Restaurant>();
             });
             var mapper = new Mapper(cofig);
@@ -210,9 +228,10 @@ namespace ZeroHunger.Controllers
 
 
         [HttpGet]
+        [Logged]
         public ActionResult DeleteRestaurant(int id)
         {
-            var db = new ZH_DBEntities12();
+            var db = new ZH_DBEntities16();
 
             var data = (from dp in db.Restaurants
                         where dp.id.Equals(id)
@@ -234,6 +253,122 @@ namespace ZeroHunger.Controllers
 
 
         }
+
+        [HttpGet]
+        [Logged]
+        public ActionResult showComingRequests()
+        {
+            var db = new ZH_DBEntities16();
+
+            var waitingRequests = (from request in db.collection_rqsts
+                                   where request.status == "waiting"
+                                   select request).ToList();
+
+            return View(waitingRequests);
+
+        }
+
+        [HttpGet]
+        [Logged]
+        public ActionResult showRequests()
+        {
+            var db = new ZH_DBEntities16();
+
+            var data = db.collection_rqsts.ToList();
+
+            return View(data);
+        }
+
+
+        [HttpGet]
+        [Logged]
+        public ActionResult AcceptRequest(int id)
+        {
+            var db = new ZH_DBEntities16();
+
+            var model = (from request in db.collection_rqsts
+                         where request.id == id
+                         select new DistributionDTO
+                         {
+                             // Map properties from request to DistributionDTO
+                             // Example: Property1 = request.Property1,
+                             //          Property2 = request.Property2,
+                             request_id = request.id,
+                             dist_date = DateTime.Now,
+
+                         }).SingleOrDefault();
+
+
+
+            return View(model);
+
+        }
+
+        [HttpPost]
+        public ActionResult AcceptRequest(Distribution distribution)
+        {
+            var db = new ZH_DBEntities16();
+
+            db.Distributions.Add(new Distribution
+            {
+                request_id = distribution.request_id,
+                emp_id = distribution.emp_id,
+                dist_date = distribution.dist_date,
+                status = "completed",
+
+            });
+            db.SaveChanges();
+
+            var model = (from request in db.collection_rqsts
+                         where request.id == distribution.request_id
+                         select request).SingleOrDefault();
+
+            if (model != null)
+            {
+                db.Entry(model).Property(x => x.status).IsModified = true;
+                model.status = "completed";
+
+                // Save changes to the database
+                db.SaveChanges();
+            }
+            
+
+            return RedirectToAction("showRequests", "Home");
+
+        }
+
+
+
+        [HttpGet]
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+
+        public ActionResult Login(login login)
+        {
+            if (ModelState.IsValid)
+            {
+                if (login.Username == "admin" && login.Password == "admin")
+                {
+                    Session["user"] = "admin";
+                    return RedirectToAction("Index", "Home");
+                }
+                TempData["Msg"] = "Username Password Invalid";
+            }
+            return View(login);
+
+        }
+
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            Session.Clear();
+            return RedirectToAction("Login");
+        }
+
 
     }
 }

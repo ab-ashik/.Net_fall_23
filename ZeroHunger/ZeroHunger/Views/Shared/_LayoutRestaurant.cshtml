@@ -8,12 +8,32 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg bg-primary">
+    <nav class="navbar navbar-expand-lg bg-primary text-white">
         <div class="container-fluid">
             <b class="navbar-brand text-white" href="#">Zero Hunger</b>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/Restaurant/Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/Restaurant/MakeRequest">Make Request</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/Restaurant/showRequests">Show Requests</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="navbar justify-content-end">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/Restaurant/Logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
     <div class="container body-content">
@@ -29,3 +49,5 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
+
+

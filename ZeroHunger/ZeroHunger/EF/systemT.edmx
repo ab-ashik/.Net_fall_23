@@ -13,6 +13,17 @@
           <Property Name="restaurant_id" Type="int" Nullable="false" />
           <Property Name="expiry_date" Type="datetime" Nullable="false" />
           <Property Name="status" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Distributions">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="request_id" Type="int" Nullable="false" />
+          <Property Name="emp_id" Type="int" Nullable="false" />
+          <Property Name="dist_date" Type="datetime" Nullable="false" />
+          <Property Name="status" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Employees">
           <Key>
@@ -22,16 +33,6 @@
           <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="phone" Type="int" Nullable="false" />
           <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
-        </EntityType>
-        <EntityType Name="History">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" Nullable="false" />
-          <Property Name="distribution_id" Type="int" Nullable="false" />
-          <Property Name="emp_id" Type="int" Nullable="false" />
-          <Property Name="restuarant_id" Type="int" Nullable="false" />
-          <Property Name="collection_time" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Restaurants">
           <Key>
@@ -56,46 +57,46 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_History_Distributions">
-          <End Role="Restaurants" Type="Self.Restaurants" Multiplicity="1" />
-          <End Role="History" Type="Self.History" Multiplicity="*" />
+        <Association Name="FK_Distributions_collection_rqsts">
+          <End Role="collection_rqsts" Type="Self.collection_rqsts" Multiplicity="1" />
+          <End Role="Distributions" Type="Self.Distributions" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Restaurants">
+            <Principal Role="collection_rqsts">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="History">
-              <PropertyRef Name="restuarant_id" />
+            <Dependent Role="Distributions">
+              <PropertyRef Name="request_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_History_Employees">
+        <Association Name="FK_Distributions_Employees1">
           <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
-          <End Role="History" Type="Self.History" Multiplicity="*" />
+          <End Role="Distributions" Type="Self.Distributions" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Employees">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="History">
+            <Dependent Role="Distributions">
               <PropertyRef Name="emp_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="ZH_DBModelStoreContainer">
           <EntitySet Name="collection_rqsts" EntityType="Self.collection_rqsts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Distributions" EntityType="Self.Distributions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="History" EntityType="Self.History" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Restaurants" EntityType="Self.Restaurants" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_collection_rqsts_Restaurants" Association="Self.FK_collection_rqsts_Restaurants">
             <End Role="Restaurants" EntitySet="Restaurants" />
             <End Role="collection_rqsts" EntitySet="collection_rqsts" />
           </AssociationSet>
-          <AssociationSet Name="FK_History_Distributions" Association="Self.FK_History_Distributions">
-            <End Role="Restaurants" EntitySet="Restaurants" />
-            <End Role="History" EntitySet="History" />
+          <AssociationSet Name="FK_Distributions_collection_rqsts" Association="Self.FK_Distributions_collection_rqsts">
+            <End Role="collection_rqsts" EntitySet="collection_rqsts" />
+            <End Role="Distributions" EntitySet="Distributions" />
           </AssociationSet>
-          <AssociationSet Name="FK_History_Employees" Association="Self.FK_History_Employees">
+          <AssociationSet Name="FK_Distributions_Employees1" Association="Self.FK_Distributions_Employees1">
             <End Role="Employees" EntitySet="Employees" />
-            <End Role="History" EntitySet="History" />
+            <End Role="Distributions" EntitySet="Distributions" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -111,7 +112,21 @@
           <Property Name="restaurant_id" Type="Int32" Nullable="false" />
           <Property Name="expiry_date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Restaurant" Relationship="Self.FK_collection_rqsts_Restaurants" FromRole="collection_rqsts" ToRole="Restaurants" />
+          <NavigationProperty Name="Distributions" Relationship="Self.FK_Distributions_collection_rqsts" FromRole="collection_rqsts" ToRole="Distributions" />
+        </EntityType>
+        <EntityType Name="Distribution">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="request_id" Type="Int32" Nullable="false" />
+          <Property Name="emp_id" Type="Int32" Nullable="false" />
+          <Property Name="dist_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="collection_rqsts" Relationship="Self.FK_Distributions_collection_rqsts" FromRole="Distributions" ToRole="collection_rqsts" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Distributions_Employees1" FromRole="Distributions" ToRole="Employees" />
         </EntityType>
         <EntityType Name="Employee">
           <Key>
@@ -121,19 +136,7 @@
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="phone" Type="Int32" Nullable="false" />
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Histories" Relationship="Self.FK_History_Employees" FromRole="Employees" ToRole="History" />
-        </EntityType>
-        <EntityType Name="History">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="distribution_id" Type="Int32" Nullable="false" />
-          <Property Name="emp_id" Type="Int32" Nullable="false" />
-          <Property Name="restuarant_id" Type="Int32" Nullable="false" />
-          <Property Name="collection_time" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_History_Employees" FromRole="History" ToRole="Employees" />
-          <NavigationProperty Name="Restaurant" Relationship="Self.FK_History_Distributions" FromRole="History" ToRole="Restaurants" />
+          <NavigationProperty Name="Distributions" Relationship="Self.FK_Distributions_Employees1" FromRole="Employees" ToRole="Distributions" />
         </EntityType>
         <EntityType Name="Restaurant">
           <Key>
@@ -146,7 +149,6 @@
           <Property Name="phone" Type="Int32" Nullable="false" />
           <Property Name="location" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="collection_rqsts" Relationship="Self.FK_collection_rqsts_Restaurants" FromRole="Restaurants" ToRole="collection_rqsts" />
-          <NavigationProperty Name="Histories" Relationship="Self.FK_History_Distributions" FromRole="Restaurants" ToRole="History" />
         </EntityType>
         <Association Name="FK_collection_rqsts_Restaurants">
           <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="1" />
@@ -160,46 +162,46 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_History_Employees">
+        <Association Name="FK_Distributions_collection_rqsts">
+          <End Role="collection_rqsts" Type="Self.collection_rqsts" Multiplicity="1" />
+          <End Role="Distributions" Type="Self.Distribution" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="collection_rqsts">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Distributions">
+              <PropertyRef Name="request_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Distributions_Employees1">
           <End Role="Employees" Type="Self.Employee" Multiplicity="1" />
-          <End Role="History" Type="Self.History" Multiplicity="*" />
+          <End Role="Distributions" Type="Self.Distribution" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Employees">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="History">
+            <Dependent Role="Distributions">
               <PropertyRef Name="emp_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_History_Distributions">
-          <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="1" />
-          <End Role="History" Type="Self.History" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Restaurants">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="History">
-              <PropertyRef Name="restuarant_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="ZH_DBEntities12" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="ZH_DBEntities16" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="collection_rqsts" EntityType="Self.collection_rqsts" />
+          <EntitySet Name="Distributions" EntityType="Self.Distribution" />
           <EntitySet Name="Employees" EntityType="Self.Employee" />
-          <EntitySet Name="Histories" EntityType="Self.History" />
           <EntitySet Name="Restaurants" EntityType="Self.Restaurant" />
           <AssociationSet Name="FK_collection_rqsts_Restaurants" Association="Self.FK_collection_rqsts_Restaurants">
             <End Role="Restaurants" EntitySet="Restaurants" />
             <End Role="collection_rqsts" EntitySet="collection_rqsts" />
           </AssociationSet>
-          <AssociationSet Name="FK_History_Employees" Association="Self.FK_History_Employees">
-            <End Role="Employees" EntitySet="Employees" />
-            <End Role="History" EntitySet="Histories" />
+          <AssociationSet Name="FK_Distributions_collection_rqsts" Association="Self.FK_Distributions_collection_rqsts">
+            <End Role="collection_rqsts" EntitySet="collection_rqsts" />
+            <End Role="Distributions" EntitySet="Distributions" />
           </AssociationSet>
-          <AssociationSet Name="FK_History_Distributions" Association="Self.FK_History_Distributions">
-            <End Role="Restaurants" EntitySet="Restaurants" />
-            <End Role="History" EntitySet="Histories" />
+          <AssociationSet Name="FK_Distributions_Employees1" Association="Self.FK_Distributions_Employees1">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Distributions" EntitySet="Distributions" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -207,13 +209,25 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ZH_DBModelStoreContainer" CdmEntityContainer="ZH_DBEntities12">
+        <EntityContainerMapping StorageEntityContainer="ZH_DBModelStoreContainer" CdmEntityContainer="ZH_DBEntities16">
           <EntitySetMapping Name="collection_rqsts">
             <EntityTypeMapping TypeName="ZH_DBModel.collection_rqsts">
               <MappingFragment StoreEntitySet="collection_rqsts">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="restaurant_id" ColumnName="restaurant_id" />
                 <ScalarProperty Name="expiry_date" ColumnName="expiry_date" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Distributions">
+            <EntityTypeMapping TypeName="ZH_DBModel.Distribution">
+              <MappingFragment StoreEntitySet="Distributions">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="request_id" ColumnName="request_id" />
+                <ScalarProperty Name="emp_id" ColumnName="emp_id" />
+                <ScalarProperty Name="dist_date" ColumnName="dist_date" />
                 <ScalarProperty Name="status" ColumnName="status" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -225,17 +239,6 @@
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="phone" ColumnName="phone" />
                 <ScalarProperty Name="email" ColumnName="email" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Histories">
-            <EntityTypeMapping TypeName="ZH_DBModel.History">
-              <MappingFragment StoreEntitySet="History">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="distribution_id" ColumnName="distribution_id" />
-                <ScalarProperty Name="emp_id" ColumnName="emp_id" />
-                <ScalarProperty Name="restuarant_id" ColumnName="restuarant_id" />
-                <ScalarProperty Name="collection_time" ColumnName="collection_time" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

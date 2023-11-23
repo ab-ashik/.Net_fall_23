@@ -1,13 +1,17 @@
-﻿
+﻿@{
+    Layout = "~/Views/Shared/_LayoutRestaurant.cshtml";
+}
+
+
 @{
     ViewBag.Title = "Index";
 }
-   
+
 
 
 <div>
     <div class="text-center">
-        <h1>restaurants</h1><br />
+        <h1>Your Details</h1><br />
     </div>
     <table class="table table-striped table-bordered">
         <tr>
@@ -25,13 +29,13 @@
                 <td>@item.username </td>
                 <td>@item.phone</td>
                 <td>@item.location</td>
-                <td class="text-center"><a href="Restaurant/MakeRequest" class="btn btn-primary">Make Request</a></td>
+                <td class="text-center"><a href="/Restaurant/MakeRequest" class="btn btn-primary">Make Request</a></td>
             </tr>
         }
 
 
     </table>
 
-    <h2</h2>
+    <h2></h2>
 </div>
 

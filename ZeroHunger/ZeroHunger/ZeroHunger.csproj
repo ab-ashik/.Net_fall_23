@@ -131,6 +131,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Auth\Logged.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RestaurantController.cs" />
     <Compile Include="DTOs\collection_rqstsDTO.cs" />
@@ -140,10 +141,10 @@
     <Compile Include="EF\collection_rqsts.cs">
       <DependentUpon>systemT.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\Employee.cs">
+    <Compile Include="EF\Distribution.cs">
       <DependentUpon>systemT.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\History.cs">
+    <Compile Include="EF\Employee.cs">
       <DependentUpon>systemT.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\Restaurant.cs">
@@ -235,8 +236,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Employee.cshtml" />
     <Content Include="Views\Home\AddEmployees.cshtml" />
@@ -247,6 +246,13 @@
     <Content Include="Views\Restaurant\Index.cshtml" />
     <Content Include="Views\Restaurant\MakeRequest.cshtml" />
     <Content Include="Views\Restaurant\Login.cshtml" />
+    <Content Include="Views\Home\showComingRequests.cshtml" />
+    <Content Include="Views\Home\AcceptRequest.cshtml" />
+    <Content Include="Views\Home\showRequests.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
+    <Content Include="Views\Shared\_LayoutRestaurant.cshtml" />
+    <Content Include="Views\Restaurant\showRequests.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

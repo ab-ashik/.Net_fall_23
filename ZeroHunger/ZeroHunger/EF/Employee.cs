@@ -17,7 +17,7 @@ namespace ZeroHunger.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Employee()
         {
-            this.Histories = new HashSet<History>();
+            this.Distributions = new HashSet<Distribution>();
         }
     
         public int id { get; set; }
@@ -26,6 +26,6 @@ namespace ZeroHunger.EF
         public string email { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<History> Histories { get; set; }
+        public virtual ICollection<Distribution> Distributions { get; set; }
     }
 }

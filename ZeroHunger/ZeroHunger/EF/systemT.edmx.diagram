@@ -4,14 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="9508eb2f4f2148129b232264c1306d7a" Name="Diagram1">
-        <EntityTypeShape EntityType="ZH_DBModel.collection_rqsts" Width="1.5" PointX="3.875" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ZH_DBModel.Employee" Width="1.5" PointX="7.625" PointY="3.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="ZH_DBModel.History" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ZH_DBModel.Restaurant" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
+      <Diagram DiagramId="023d571d72974ad99be638fd7e22e902" Name="Diagram1">
+        <EntityTypeShape EntityType="ZH_DBModel.collection_rqsts" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="ZH_DBModel.Distribution" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="ZH_DBModel.Employee" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ZH_DBModel.Restaurant" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
         <AssociationConnector Association="ZH_DBModel.FK_collection_rqsts_Restaurants" ManuallyRouted="false" />
-        <AssociationConnector Association="ZH_DBModel.FK_History_Employees" ManuallyRouted="false" />
-        <AssociationConnector Association="ZH_DBModel.FK_History_Distributions" ManuallyRouted="false" />
+        <AssociationConnector Association="ZH_DBModel.FK_Distributions_collection_rqsts" ManuallyRouted="false" />
+        <AssociationConnector Association="ZH_DBModel.FK_Distributions_Employees1" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

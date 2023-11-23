@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using System.Web.UI.WebControls;
+using ZeroHunger.Auth;
 using ZeroHunger.DTOs;
 using ZeroHunger.EF;
 using ZeroHunger.Models;
@@ -14,9 +16,10 @@ namespace ZeroHunger.Controllers
     public class RestaurantController : Controller
     {
         // GET: Restaurant
+        [Logged]
         public ActionResult Index()
         {
-            var db = new ZH_DBEntities12();
+            var db = new ZH_DBEntities16();
 
             var id = Session["id"];
 
@@ -42,20 +45,15 @@ namespace ZeroHunger.Controllers
         {
             if (ModelState.IsValid)
             {
-                var db = new ZH_DBEntities12();
+                var db = new ZH_DBEntities16();
                 var user = (from u in db.Restaurants
                             where u.username.Equals(login.Username)
                             && u.password.Equals(login.Password)
                             select u).SingleOrDefault();
                 if (user != null)
                 {
-                    Session["user"] = user;
+                    Session["user"] = user.username;
                     Session["id"] = user.id;
-                    //var returnUrl = Request["ReturnUrl"];
-                    //if (returnUrl != null)
-                    //{
-                    //    return Redirect(returnUrl);
-                    //}
                     return RedirectToAction("Index", "Restaurant");
                 }
                 TempData["Msg"] = "Username Password Invalid";
@@ -64,11 +62,19 @@ namespace ZeroHunger.Controllers
 
         }
 
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            Session.Clear();
+            return RedirectToAction("Login");
+        }
+
 
         [HttpGet]
+        [Logged]
         public ActionResult MakeRequest()
         {
-            var db = new ZH_DBEntities12();
+            var db = new ZH_DBEntities16();
 
             var id = Session["id"];
             var data = db.Restaurants.Find(id);
@@ -84,7 +90,7 @@ namespace ZeroHunger.Controllers
         [HttpPost]
         public ActionResult MakeRequest(collection_rqsts model)
         {
-            var db = new ZH_DBEntities12();
+            var db = new ZH_DBEntities16();
 
            // var id = Session["id"];
 
@@ -92,11 +98,29 @@ namespace ZeroHunger.Controllers
             {
                 restaurant_id = (int)Session["id"],
                 expiry_date = model.expiry_date,
-                status = "waiting"
+                status = "waiting",
+                description = model.description
             });
             db.SaveChanges();
 
-            return RedirectToAction("Index", "Restaurant");
+            return RedirectToAction("Index", "Restaurant");   
+
+        }
+
+
+        [HttpGet]
+        [Logged]
+        public ActionResult showRequests()
+        {
+            var db = new ZH_DBEntities16();
+
+            int idd = (int)Session["id"];
+
+            var requests = (from request in db.collection_rqsts
+                                   where request.restaurant_id == idd
+                                   select request).ToList();
+
+            return View(requests);
 
         }
     }

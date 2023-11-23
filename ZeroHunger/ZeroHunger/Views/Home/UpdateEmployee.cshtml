@@ -1,4 +1,7 @@
-﻿@model ZeroHunger.DTOs.EmployeeDTO
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@model ZeroHunger.DTOs.EmployeeDTO
 
 @{
     ViewBag.Title = "UpdateEmployee";
@@ -23,8 +26,8 @@
                    placeholder="Enter email address here" value="@Model.email">
         </div>
 
-            <div class="">
-                <button type="submit" class="btn btn-primary">Add Employee</button>
-            </div>
+        <div class="">
+            <button type="submit" class="btn btn-primary">Add Employee</button>
+        </div>
     </form>
 </div>

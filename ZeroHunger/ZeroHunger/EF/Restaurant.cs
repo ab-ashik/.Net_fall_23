@@ -18,7 +18,6 @@ namespace ZeroHunger.EF
         public Restaurant()
         {
             this.collection_rqsts = new HashSet<collection_rqsts>();
-            this.Histories = new HashSet<History>();
         }
     
         public int id { get; set; }
@@ -30,7 +29,5 @@ namespace ZeroHunger.EF
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<collection_rqsts> collection_rqsts { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<History> Histories { get; set; }
     }
 }
